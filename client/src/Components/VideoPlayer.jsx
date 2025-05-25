@@ -11,7 +11,7 @@ const VideoPlayer = () => {
   const { roomId } = useParams();
 
   useEffect(() => {
-    const ws = new WebSocket(`ws://localhost:8000/ws/${roomId}`);
+    const ws = new WebSocket(`${import.meta.env.VITE_WS_URL}/ws/${roomId}`);
 
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data);
