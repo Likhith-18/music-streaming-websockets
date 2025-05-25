@@ -17,7 +17,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-gray-50">
-      <h1 className="text-4xl font-bold">Welcome to Video Room</h1>
+      <h1 className="text-4xl font-bold">Welcome to VibeSync 🎧🎶</h1>
       <div className="flex space-x-4">
         <button
           onClick={createRoom}

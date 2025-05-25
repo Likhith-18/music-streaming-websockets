@@ -11,7 +11,12 @@ const VideoPlayer = () => {
   const { roomId } = useParams();
 
   useEffect(() => {
-    const ws = new WebSocket(`${import.meta.env.VITE_WS_URL}/ws/${roomId}`);
+    // const ws = new WebSocket(`${import.meta.env.VITE_WS_URL}/ws/${roomId}`);
+    const ws = new WebSocket(`ws://localhost:8000/ws/${roomId}`);
+    // console.log(import.meta.env.VITE_WS_LOCAL_URL);
+
+    ws.onopen = () => console.log("Connected to WebSocket");
+    ws.onclose = () => console.log("WebSocket closed");
 
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data);
@@ -27,8 +32,6 @@ const VideoPlayer = () => {
       }
     };
 
-    ws.onopen = () => console.log("Connected to WebSocket");
-    ws.onclose = () => console.log("WebSocket closed");
     setSocket(ws);
 
     return () => ws.close();
@@ -66,12 +69,32 @@ const VideoPlayer = () => {
         >
           Add Video
         </button>
-        <button
+        {currentVideo && (
+          <button
+            onClick={() => {
+              if (isPlaying) {
+                socket?.send(JSON.stringify({ action: "pause_video" }));
+              } else {
+                socket?.send(
+                  JSON.stringify({ action: "play_video", video: currentVideo })
+                );
+              }
+            }}
+            className={`px-4 py-2 rounded text-white ${
+              isPlaying
+                ? "bg-yellow-500 hover:bg-yellow-600"
+                : "bg-green-600 hover:bg-green-700"
+            }`}
+          >
+            {isPlaying ? "Pause" : "Play"}
+          </button>
+        )}
+        {/* <button
           onClick={pauseVideo}
           className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
         >
           Pause
-        </button>
+        </button> */}
       </div>
 
       <div className="mb-8">
@@ -89,7 +112,7 @@ const VideoPlayer = () => {
       </div>
 
       <h3 className="text-xl font-semibold mb-3">🎞️ Queue</h3>
-      <div className="flex flex-wrap justify-center gap-6">
+      <div className="flex justify-center gap-6">
         {queue.map((video, index) => (
           <div key={index} className="w-40 text-center">
             <ReactPlayer
