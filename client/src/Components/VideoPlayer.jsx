@@ -11,9 +11,9 @@ const VideoPlayer = () => {
   const { roomId } = useParams();
 
   useEffect(() => {
-    // const ws = new WebSocket(`${import.meta.env.VITE_WS_URL}/ws/${roomId}`);
-    const ws = new WebSocket(`ws://localhost:8000/ws/${roomId}`);
-    // console.log(import.meta.env.VITE_WS_LOCAL_URL);
+    const ws = new WebSocket(`${import.meta.env.VITE_WS_URL}/ws/${roomId}`);
+    // const ws = new WebSocket(`ws://localhost:8000/ws/${roomId}`);
+    console.log(ws);
 
     ws.onopen = () => console.log("Connected to WebSocket");
     ws.onclose = () => console.log("WebSocket closed");
