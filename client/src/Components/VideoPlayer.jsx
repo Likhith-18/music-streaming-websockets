@@ -29,6 +29,8 @@ const VideoPlayer = () => {
         setIsPlaying(true);
       } else if (msg.type === "pause_video") {
         setIsPlaying(false);
+      } else {
+        console.log(msg.msg);
       }
     };
 
